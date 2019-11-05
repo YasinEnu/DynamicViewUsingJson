@@ -20,4 +20,11 @@ public class Constants {
     public static final String JSON_IMAGE_SOURCE = "src" ;
     public static final String TYPE_IMAGE_VIEW = "imageView";
     public static final String JSON_KEY_GRAVITY = "gravity";
+    public static final String JSON_KEY_HEIGHT = "height";
+    public static final String JSON_KEY_WIDTH = "width";
+    public static final String JSON_KEY_MARGIN = "margin";
+    public static final String JSON_KEY_PADDING = "padding";
+    public static final String JSON_KEY_TEXT_STYLE = "textStyle";
+    public static final String JSON_KEY_HINT = "hint";
+    public static final String JSON_INPUT_TYPE = "inputType";
 }

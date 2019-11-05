@@ -8,21 +8,27 @@ import com.yasin.hosain.dynamicviewusingjson.utils.Constants;
 
 
 
-public class DYEditText extends DYView {
+public class DYEditText extends DYTextView {
+
+
+    @JsonProperty(Constants.JSON_KEY_DESCRIPTION)
+    private String description;
+
+    @JsonProperty(Constants.JSON_KEY_MODE)
+    private int mode;
+
+    @JsonProperty(Constants.JSON_INPUT_TYPE)
+    private String inputType;
+
+
+
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isSingleLine() {
-        return singleLine;
-    }
-
-    public void setSingleLine(boolean singleLine) {
-        this.singleLine = singleLine;
     }
 
     public int getMode() {
@@ -33,23 +39,11 @@ public class DYEditText extends DYView {
         this.mode = mode;
     }
 
-    public String getText() {
-        return text;
+    public String getInputType() {
+        return inputType;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setInputType(String inputType) {
+        this.inputType = inputType;
     }
-
-    @JsonProperty(Constants.JSON_KEY_DESCRIPTION)
-    private String description;
-
-    @JsonProperty(Constants.JSON_KEY_SINGLE_LINE)
-    private boolean singleLine;
-
-    @JsonProperty(Constants.JSON_KEY_MODE)
-    private int mode;
-
-    @JsonIgnore
-    private String text;
 }

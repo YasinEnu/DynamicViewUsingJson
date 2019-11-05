@@ -22,7 +22,109 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String viewJson="{ \"views\": [ { \"type\": \"imageView\",\"gravity\": \"center\", \"src\": \"https://i.imgur.com/DvpvklR.png\", \"tag\": \"textView1\" }, { \"type\": \"textView\", \"text\": \"Sample Text View\", \"textSize\": 20, \"tag\": \"textView1\" }, { \"type\": \"editText\", \"description\": \"Edit Text in HINT mode - single line\", \"mode\": 1, \"singleLine\": true, \"tag\": \"editText1\" }, { \"type\": \"radioGroup\", \"description\": \"Choose one among these:\", \"options\": [ \"One\", \"Two\", \"Three\" ], \"tag\": \"radioGroup1\" }, { \"type\": \"checkbox\", \"description\": \"Do you like this library?\", \"tag\": \"checkbox1\" }, { \"type\": \"checkboxGroup\", \"description\": \"Choose any number of these:\", \"options\": [ \"One\", \"Two\", \"Three\" ], \"tag\": \"checkBoxGroup1\" }, { \"type\": \"dropDownList\", \"description\": \"Choose one among these:\", \"options\": [ \"One\", \"Two\", \"Three\" ], \"tag\": \"dropDownList1\" }, { \"type\": \"dropDownList\", \"description\": \"Choose one among these:\", \"options\": [ \"four\", \"five\", \"six\" ], \"tag\": \"dropDownList2\" }, { \"type\": \"button\", \"name\": \"Sample Text View\", \"tag\": \"button1\" } ] }";
+        String viewJson="{\n" +
+                "  \"views\": [\n" +
+                "    {\n" +
+                "      \"type\": \"imageView\",\n" +
+                "      \"height\": \"wrap_content\",\n" +
+                "      \"width\": \"wrap_content\",\n" +
+                "      \"margin\": \"10\",\n" +
+                "      \"padding\": \"10\",\n" +
+                "      \"gravity\": \"center\",\n" +
+                "      \"src\": \"https://i.imgur.com/DvpvklR.png\",\n" +
+                "      \"tag\": \"imageView1\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"type\": \"textView\",\n" +
+                "      \"height\": \"wrap_content\",\n" +
+                "      \"width\": \"wrap_content\",\n" +
+                "      \"margin\": \"10\",\n" +
+                "      \"padding\": \"10\",\n" +
+                "      \"gravity\": \"center\",\n" +
+                "      \"text\": \"Sample Text View\",\n" +
+                "      \"textSize\": 20,\n" +
+                "      \"tag\": \"textView1\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"type\": \"editText\",\n" +
+                "      \"height\": \"wrap_content\",\n" +
+                "      \"width\": \"wrap_content\",\n" +
+                "      \"margin\": \"10\",\n" +
+                "      \"padding\": \"10\",\n" +
+                "      \"gravity\": \"center\",\n" +
+                "      \"description\": \"Edit Text\",\n" +
+                "      \"mode\": 1,\n" +
+                "      \"singleLine\": true,\n" +
+                "      \"inputType\": \"text\",\n" +
+                "      \"tag\": \"editText1\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"type\": \"radioGroup\",\n" +
+                "      \"height\": \"wrap_content\",\n" +
+                "      \"width\": \"wrap_content\",\n" +
+                "      \"margin\": \"10\",\n" +
+                "      \"padding\": \"10\",\n" +
+                "      \"gravity\": \"center\",\n" +
+                "      \"description\": \"Choose one among these:\",\n" +
+                "      \"options\": [\n" +
+                "        \"One\",\n" +
+                "        \"Two\",\n" +
+                "        \"Three\"\n" +
+                "      ],\n" +
+                "      \"tag\": \"radioGroup1\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"type\": \"checkbox\",\n" +
+                "      \"height\": \"wrap_content\",\n" +
+                "      \"width\": \"wrap_content\",\n" +
+                "      \"margin\": \"10\",\n" +
+                "      \"padding\": \"10\",\n" +
+                "      \"gravity\": \"center\",\n" +
+                "      \"description\": \"Do you like this library?\",\n" +
+                "      \"tag\": \"checkbox1\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"type\": \"dropDownList\",\n" +
+                "      \"height\": \"wrap_content\",\n" +
+                "      \"width\": \"wrap_content\",\n" +
+                "      \"margin\": \"10\",\n" +
+                "      \"padding\": \"10\",\n" +
+                "      \"gravity\": \"center\",\n" +
+                "      \"description\": \"Choose one among these:\",\n" +
+                "      \"options\": [\n" +
+                "        \"One\",\n" +
+                "        \"Two\",\n" +
+                "        \"Three\"\n" +
+                "      ],\n" +
+                "      \"tag\": \"dropDownList1\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"type\": \"dropDownList\",\n" +
+                "      \"height\": \"wrap_content\",\n" +
+                "      \"width\": \"wrap_content\",\n" +
+                "      \"margin\": \"10\",\n" +
+                "      \"padding\": \"10\",\n" +
+                "      \"gravity\": \"center\",\n" +
+                "      \"description\": \"Choose one among these:\",\n" +
+                "      \"options\": [\n" +
+                "        \"four\",\n" +
+                "        \"five\",\n" +
+                "        \"six\"\n" +
+                "      ],\n" +
+                "      \"tag\": \"dropDownList2\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"type\": \"button\",\n" +
+                "      \"height\": \"wrap_content\",\n" +
+                "      \"width\": \"match_parent\",\n" +
+                "      \"margin\": \"10\",\n" +
+                "      \"padding\": \"10\",\n" +
+                "      \"gravity\": \"center\",\n" +
+                "      \"name\": \"Sample Text View\",\n" +
+                "      \"tag\": \"button1\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
         try {
             FormBuilder formBuilder=new FormBuilder(this,((LinearLayout)findViewById(R.id.mainView)));
             formBuilder.createFromJson(viewJson);

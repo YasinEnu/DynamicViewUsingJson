@@ -3,6 +3,8 @@ package com.yasin.hosain.dynamicviewusingjson;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.Typeface;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,55 +58,51 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
     }
 
 
-    public void createTextView(String text, int textSize) {
+    public void createTextView(DYTextView dyTextView) {
         TextView textView = new TextView(this);
-        textView.setTextSize(textSize);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp20));
-        textView.setLayoutParams(params);
-        textView.setText(text);
+        textView.setTextSize(dyTextView.getTextSize());
+        ViewGroup.LayoutParams layoutParams=setParams(dyTextView.getHeight(),dyTextView.getWidth(),dyTextView.getMargin());
+        textView.setLayoutParams(layoutParams);
+        setPadding(textView,dyTextView.getPadding());
+        setGravity(textView,dyTextView.getGravity());
+        setTextStyle(textView,dyTextView.getTextStyle());
+        textView.setText(dyTextView.getText());
         parentLayout.addView(textView);
-
-        DYTextView DYTextView = new DYTextView();
-        DYTextView.setType(Constants.TYPE_TEXT_VIEW);
-        DYTextView.setText(text);
-        DYTextView.setTextSize(textSize);
-        views.add(DYTextView);
+        views.add(dyTextView);
     }
 
-    private void createButton(String name) {
+
+
+
+    private void createButton(DYButton dyButton) {
 
         Button button = new Button(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp20));
-        button.setLayoutParams(params);
-        button.setText(name);
+        button.setLayoutParams(setParams(dyButton.getHeight(),dyButton.getWidth(),dyButton.getMargin()));
+        setPadding(button,dyButton.getPadding());
+        button.setText(dyButton.getName());
+        setGravity(button,dyButton.getGravity());
         button.setOnClickListener(this);
         parentLayout.addView(button);
-
-        DYButton dyButton = new DYButton();
-        dyButton.setType(Constants.TYPE_BUTTON);
-        dyButton.setName(name);
         views.add(dyButton);
 
     }
 
-    private void createImageView(String url, String gravity) {
+    private void createImageView(DYImageView dyImageView) {
 
         final ProgressDialog progressDialog=new ProgressDialog(this);
         progressDialog.show();
 
         ImageView imageView = new ImageView(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp20));
-        if (gravity.equals("center")){
-            params.gravity=Gravity.CENTER;
+        LinearLayout.LayoutParams  layoutParams= (LinearLayout.LayoutParams) setParams(dyImageView.getHeight(),dyImageView.getWidth(),dyImageView.getMargin());
+        switch (dyImageView.getGravity()){
+            case  "center": layoutParams.gravity=Gravity.CENTER;break;
+            case  "left": layoutParams.gravity=Gravity.LEFT;break;
+            case  "right": layoutParams.gravity=Gravity.RIGHT;break;
+            default:layoutParams.gravity=Gravity.LEFT;break;
         }
-        imageView.setLayoutParams(params);
-        Picasso.get().load(url).error(android.R.mipmap.sym_def_app_icon).into(imageView, new Callback() {
+        imageView.setLayoutParams(layoutParams);
+        setPadding(imageView,dyImageView.getPadding());
+        Picasso.get().load(dyImageView.getImageSource()).error(android.R.mipmap.sym_def_app_icon).into(imageView, new Callback() {
             @Override
             public void onSuccess() {
                 progressDialog.dismiss();
@@ -118,10 +116,6 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
             }
         });
         parentLayout.addView(imageView);
-
-        DYImageView dyImageView = new DYImageView();
-        dyImageView.setType(Constants.TYPE_IMAGE_VIEW);
-        dyImageView.setImageSource(url);
         views.add(dyImageView);
 
     }
@@ -145,26 +139,12 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
     }
 
 
-    public void createEditText(String description, int mode, boolean singleLine) {
+    public void createEditText(DYEditText dyEditText) {
         EditText editText = new EditText(this);
         editText.setMinimumWidth(getDimension(R.dimen.dp200));
-        LinearLayout.LayoutParams params = null;
-        if (mode == EDIT_TEXT_MODE_HINT) {
-            editText.setHint(description);
-            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp20));
-        } else if (mode == EDIT_TEXT_MODE_SEPARATE) {
-            TextView textView = new TextView(this);
-            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp10));
-            textView.setLayoutParams(params);
-            textView.setText(description);
-            parentLayout.addView(textView);
-
-            params = new LinearLayout.LayoutParams(getDimension(R.dimen.dp200), ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 0, 0, getDimension(R.dimen.dp20));
-        }
-        if (singleLine) {
+        editText.setInputType(setInputType(dyEditText.getInputType()));
+        editText.setHint(dyEditText.getHint());
+        if (dyEditText.isSingleLine()) {
             editText.setMaxLines(1);
             editText.setSingleLine();
             editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -172,117 +152,88 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
         } else {
             editText.setLines(5);
         }
-        editText.setLayoutParams(params);
+        editText.setLayoutParams(setParams(dyEditText.getHeight(),dyEditText.getWidth(),dyEditText.getMargin()));
+        setPadding(editText,dyEditText.getPadding());
+        setGravity(editText,dyEditText.getGravity());
+        setTextStyle(editText,dyEditText.getTextStyle());
         parentLayout.addView(editText);
-
-        DYEditText DYEditText = new DYEditText();
-        DYEditText.setType(Constants.TYPE_EDIT_TEXT);
-        DYEditText.setDescription(description);
-        DYEditText.setMode(mode);
-        DYEditText.setSingleLine(singleLine);
-        views.add(DYEditText);
+        views.add(dyEditText);
     }
 
-
-    public void createRadioGroup(String description, List<String> options) {
-        TextView textView = new TextView(this);
-        textView.setText(description);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp10));
-        textView.setLayoutParams(params);
-
+    public void createRadioGroup(DYRadioGroup dyRadioGroup) {
         RadioGroup radioGroup = new RadioGroup(this);
-        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp20), getDimension(R.dimen.dp20));
         radioGroup.setOrientation(LinearLayout.VERTICAL);
-        radioGroup.setLayoutParams(params);
-
+        radioGroup.setLayoutParams(setParams(dyRadioGroup.getHeight(),dyRadioGroup.getWidth(),dyRadioGroup.getMargin()));
+        setPadding(radioGroup,dyRadioGroup.getPadding());
+        switch (dyRadioGroup.getGravity()){
+            case  "center": radioGroup.setGravity(Gravity.CENTER);break;
+            case  "left": radioGroup.setGravity(Gravity.LEFT);break;
+            case  "right": radioGroup.setGravity(Gravity.RIGHT);break;
+            default:radioGroup.setGravity(Gravity.LEFT);break;
+        }
         RadioButton radioButton;
-        for (String option : options) {
+        for (String option : dyRadioGroup.getOptions()) {
             radioButton = new RadioButton(this);
             radioButton.setText(option);
             radioGroup.addView(radioButton);
         }
-
-        parentLayout.addView(textView);
         parentLayout.addView(radioGroup);
-
-        DYRadioGroup DYRadioGroup = new DYRadioGroup();
-        DYRadioGroup.setType(Constants.TYPE_RADIO_GROUP);
-        DYRadioGroup.setDescription(description);
-        DYRadioGroup.setOptions(options);
-        views.add(DYRadioGroup);
+        views.add(dyRadioGroup);
     }
 
 
 
-    public void createCheckbox(String description) {
+    public void createCheckbox(DYCheckbox dyCheckbox) {
         CheckBox checkBox = new CheckBox(this);
-        checkBox.setText(description);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp20));
-        checkBox.setLayoutParams(params);
+        checkBox.setText(dyCheckbox.getDescription());
+        checkBox.setLayoutParams(setParams(dyCheckbox.getHeight(),dyCheckbox.getWidth(),dyCheckbox.getMargin()));
+        setPadding(checkBox,dyCheckbox.getPadding());
+        setGravity(checkBox,dyCheckbox.getGravity());
         parentLayout.addView(checkBox);
-
-        DYCheckbox DYCheckbox = new DYCheckbox();
-        DYCheckbox.setType(Constants.TYPE_CHECKBOX);
-        DYCheckbox.setDescription(description);
-        views.add(DYCheckbox);
+        views.add(dyCheckbox);
     }
 
 
-    public void createCheckboxGroup(String description, List<String> options) {
-        TextView textView = new TextView(this);
-        textView.setText(description);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp10));
-        textView.setLayoutParams(params);
-        parentLayout.addView(textView);
-
-        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        for (int i = 0; i < options.size(); ++i) {
-            CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(options.get(i));
-            if (i == options.size() - 1)
-                params.setMargins(0, 0, 0, getDimension(R.dimen.dp20));
-            checkBox.setLayoutParams(params);
-            parentLayout.addView(checkBox);
-        }
-
-        DYCheckboxGroup DYCheckboxGroup = new DYCheckboxGroup();
-        DYCheckboxGroup.setType(Constants.TYPE_CHECKBOX_GROUP);
-        DYCheckboxGroup.setDescription(description);
-        DYCheckboxGroup.setOptions(options);
-        views.add(DYCheckboxGroup);
-    }
+//    public void createCheckboxGroup(DYCheckboxGroup dyCheckboxGroup) {
+//        TextView textView = new TextView(this);
+//        textView.setText(dyCheckboxGroup.getDescription());
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        params.setMargins(0, getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp10));
+//        textView.setLayoutParams(params);
+//        parentLayout.addView(textView);
+//
+//        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        for (int i = 0; i < dyCheckboxGroup.getOptions().size(); ++i) {
+//            CheckBox checkBox = new CheckBox(this);
+//            checkBox.setText(dyCheckboxGroup.getOptions().get(i));
+//            if (i == dyCheckboxGroup.getOptions().size() - 1)
+//                params.setMargins(0, 0, 0, getDimension(R.dimen.dp20));
+//            checkBox.setLayoutParams(params);
+//            parentLayout.addView(checkBox);
+//        }
+//        views.add(dyCheckboxGroup);
+//    }
 
 
-    public void createDropDownList(String tag,String description, List<String> options) {
-        TextView textView = new TextView(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp10), 0);
-        textView.setLayoutParams(params);
-        textView.setText(description);
-        parentLayout.addView(textView);
+    public void createDropDownList(DYDropDownList dyDropDownList) {
 
         Spinner spinner = new Spinner(this);
-        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 0, 0, getDimension(R.dimen.dp20));
-        spinner.setLayoutParams(params);
+        spinner.setLayoutParams(setParams(dyDropDownList.getHeight(),dyDropDownList.getWidth(),dyDropDownList.getMargin()));
+        setPadding(spinner,dyDropDownList.getPadding());
+        switch (dyDropDownList.getGravity()){
+            case  "center": spinner.setGravity(Gravity.CENTER);break;
+            case  "left": spinner.setGravity(Gravity.LEFT);break;
+            case  "right": spinner.setGravity(Gravity.RIGHT);break;
+            default:spinner.setGravity(Gravity.LEFT);break;
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.buildformer_spinner_item);
-        for (String option : options) {
+        for (String option : dyDropDownList.getOptions()) {
             adapter.add(option);
         }
         spinner.setAdapter(adapter);
-        spinner.setTag(tag);
+        spinner.setTag(dyDropDownList.getTag());
         parentLayout.addView(spinner);
-
-        DYDropDownList DYDropDownList = new DYDropDownList();
-        DYDropDownList.setTag(tag);
-        DYDropDownList.setType(Constants.TYPE_DROP_DOWN_LIST);
-        DYDropDownList.setDescription(description);
-        DYDropDownList.setOptions(options);
-        views.add(DYDropDownList);
+        views.add(dyDropDownList);
     }
     public void createFromJson(String jsonString) throws IOException {
 
@@ -292,29 +243,26 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
         for (DYView view : views) {
             String type = view.getType();
             if (type.equals(Constants.TYPE_TEXT_VIEW)) {
-                DYTextView DYTextView = (DYTextView) view;
-                createTextView(DYTextView.getText(), DYTextView.getTextSize());
+                DYTextView dyTextView = (DYTextView) view;
+                createTextView(dyTextView);
             } else if (type.equals(Constants.TYPE_EDIT_TEXT)) {
-                DYEditText DYEditText = (DYEditText) view;
-                createEditText(DYEditText.getDescription(), DYEditText.getMode(), DYEditText.isSingleLine());
+                DYEditText dyEditText = (DYEditText) view;
+                createEditText(dyEditText);
             } else if (type.equals(Constants.TYPE_CHECKBOX)) {
-                DYCheckbox DYCheckbox = (DYCheckbox) view;
-                createCheckbox(DYCheckbox.getDescription());
-            } else if (type.equals(Constants.TYPE_CHECKBOX_GROUP)) {
-                DYCheckboxGroup DYCheckboxGroup = (DYCheckboxGroup) view;
-                createCheckboxGroup(DYCheckboxGroup.getDescription(), DYCheckboxGroup.getOptions());
+                DYCheckbox dyCheckbox = (DYCheckbox) view;
+                createCheckbox(dyCheckbox);
             } else if (type.equals(Constants.TYPE_RADIO_GROUP)) {
-                DYRadioGroup DYRadioGroup = (DYRadioGroup) view;
-                createRadioGroup(DYRadioGroup.getDescription(), DYRadioGroup.getOptions());
+                DYRadioGroup dyRadioGroup = (DYRadioGroup) view;
+                createRadioGroup(dyRadioGroup);
             } else if (type.equals(Constants.TYPE_DROP_DOWN_LIST)) {
-                DYDropDownList DYDropDownList = (DYDropDownList) view;
-                createDropDownList(DYDropDownList.getTag(),DYDropDownList.getDescription(), DYDropDownList.getOptions());
+                DYDropDownList dyDropDownList = (DYDropDownList) view;
+                createDropDownList(dyDropDownList);
             }else if (type.equals(Constants.TYPE_BUTTON)) {
                 DYButton dyButton= (DYButton) view;
-                createButton(dyButton.getName());
+                createButton(dyButton);
             }else if (type.equals(Constants.TYPE_IMAGE_VIEW)) {
                 DYImageView dyImageView= (DYImageView) view;
-                createImageView(dyImageView.getImageSource(),dyImageView.getGravity());
+                createImageView(dyImageView);
             }
         }
     }
@@ -322,6 +270,9 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
     private int getDimension(int id) {
         return (int) getResources().getDimension(id);
     }
+
+
+
 
     @Override
     public void onClick(View view) {
@@ -335,4 +286,108 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
             }
         }
     }
+
+    private ViewGroup.LayoutParams setParams(String height, String width, String margin) {
+
+        int viewHeight=0;
+        int viewWidth=0;
+
+        LinearLayout.LayoutParams params = null;
+        if (height!=null&&width!=null&&margin!=null){
+
+            if (isItDigit(height)||isItDigit(width)){
+                if (isItDigit(height)){
+                    viewHeight=Integer.parseInt(height);
+                }else {
+                    viewHeight=ViewGroup.LayoutParams.WRAP_CONTENT;
+                }
+                if (isItDigit(width)){
+                    viewWidth=Integer.parseInt(width);
+                }else {
+                    viewWidth=ViewGroup.LayoutParams.WRAP_CONTENT;
+                }
+            }
+            if (height.equals("wrap_content")){
+                viewHeight=ViewGroup.LayoutParams.WRAP_CONTENT;
+            }
+            if (width.equals("wrap_content")){
+                viewWidth=ViewGroup.LayoutParams.WRAP_CONTENT;
+            }
+            if (height.equals("match_parent")){
+                viewHeight=ViewGroup.LayoutParams.MATCH_PARENT;
+            }
+            if (width.equals("match_parent")){
+                viewWidth=ViewGroup.LayoutParams.MATCH_PARENT;
+            }
+
+            params=new LinearLayout.LayoutParams(viewWidth, viewHeight);
+        }else {
+            params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        if (margin!=null){
+            params.setMargins(0,0,0,0);
+        }else {
+            if (isItDigit(margin)){
+                params.setMargins(Integer.parseInt(margin),Integer.parseInt(margin),Integer.parseInt(margin),Integer.parseInt(margin));
+            }else {
+                params.setMargins(0,0,0,0);
+            }
+        }
+        return params;
+    }
+
+    private void setPadding(View view, String padding) {
+        if (padding!=null){
+            if (isItDigit(padding)){
+                view.setPadding(Integer.parseInt(padding),Integer.parseInt(padding),Integer.parseInt(padding),Integer.parseInt(padding));
+            }else {
+                view.setPadding(0,0,0,0);
+            }
+        }
+    }
+
+    private void setGravity(TextView view, String gravity) {
+        if (gravity!=null){
+            switch (gravity){
+                case  "center": view.setGravity(Gravity.CENTER);break;
+                case  "left": view.setGravity(Gravity.LEFT);break;
+                case  "right": view.setGravity(Gravity.RIGHT);break;
+                default:view.setGravity(Gravity.LEFT);break;
+            }
+        }
+    }
+
+    private void setTextStyle(TextView textView, String textStyle) {
+        if (textStyle!=null){
+            switch (textStyle){
+                case"bold":textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+                case"italic":textView.setTypeface(textView.getTypeface(), Typeface.ITALIC);
+                case"normal":textView.setTypeface(textView.getTypeface(), Typeface.NORMAL);
+                default:textView.setTypeface(textView.getTypeface(), Typeface.NORMAL);
+            }
+        }
+    }
+
+    private int setInputType(String inputType) {
+        switch (inputType){
+            case "text":return InputType.TYPE_CLASS_TEXT;
+            case "number":return InputType.TYPE_CLASS_NUMBER;
+            case "phone":return InputType.TYPE_CLASS_PHONE;
+            default:return InputType.TYPE_NULL;
+        }
+    }
+
+
+    private boolean isItDigit(String digitString){
+        try {
+            Integer.parseInt(digitString);
+            return true;
+        }catch (NumberFormatException n){
+            n.printStackTrace();
+            return false;
+        }
+    }
+
+
+
 }
