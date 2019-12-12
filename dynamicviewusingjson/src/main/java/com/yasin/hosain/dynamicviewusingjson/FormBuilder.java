@@ -60,8 +60,15 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
 
     public void createTextView(DYTextView dyTextView) {
         TextView textView = new TextView(this);
-        textView.setTextSize(dyTextView.getTextSize());
-        ViewGroup.LayoutParams layoutParams=setParams(dyTextView.getHeight(),dyTextView.getWidth(),dyTextView.getMargin());
+        LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams)setParams(dyTextView.getHeight(),dyTextView.getWidth(),dyTextView.getMargin());
+        if (dyTextView.getGravity()!=null){
+            switch (dyTextView.getGravity()){
+                case  "center": layoutParams.gravity=Gravity.CENTER;break;
+                case  "left": layoutParams.gravity=Gravity.LEFT;break;
+                case  "right": layoutParams.gravity=Gravity.RIGHT;break;
+                default:layoutParams.gravity=Gravity.LEFT;break;
+            }
+        }
         textView.setLayoutParams(layoutParams);
         setPadding(textView,dyTextView.getPadding());
         setGravity(textView,dyTextView.getGravity());
@@ -77,10 +84,18 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
     private void createButton(DYButton dyButton) {
 
         Button button = new Button(this);
-        button.setLayoutParams(setParams(dyButton.getHeight(),dyButton.getWidth(),dyButton.getMargin()));
+        LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) setParams(dyButton.getHeight(),dyButton.getWidth(),dyButton.getMargin());
+        if (dyButton.getGravity()!=null){
+            switch (dyButton.getGravity()){
+                case  "center": layoutParams.gravity=Gravity.CENTER;break;
+                case  "left": layoutParams.gravity=Gravity.LEFT;break;
+                case  "right": layoutParams.gravity=Gravity.RIGHT;break;
+                default:layoutParams.gravity=Gravity.LEFT;break;
+            }
+        }
+        button.setLayoutParams(layoutParams);
         setPadding(button,dyButton.getPadding());
         button.setText(dyButton.getName());
-        setGravity(button,dyButton.getGravity());
         button.setOnClickListener(this);
         parentLayout.addView(button);
         views.add(dyButton);
@@ -94,11 +109,13 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
 
         ImageView imageView = new ImageView(this);
         LinearLayout.LayoutParams  layoutParams= (LinearLayout.LayoutParams) setParams(dyImageView.getHeight(),dyImageView.getWidth(),dyImageView.getMargin());
-        switch (dyImageView.getGravity()){
-            case  "center": layoutParams.gravity=Gravity.CENTER;break;
-            case  "left": layoutParams.gravity=Gravity.LEFT;break;
-            case  "right": layoutParams.gravity=Gravity.RIGHT;break;
-            default:layoutParams.gravity=Gravity.LEFT;break;
+        if (dyImageView.getGravity()!=null){
+            switch (dyImageView.getGravity()){
+                case  "center": layoutParams.gravity=Gravity.CENTER;break;
+                case  "left": layoutParams.gravity=Gravity.LEFT;break;
+                case  "right": layoutParams.gravity=Gravity.RIGHT;break;
+                default:layoutParams.gravity=Gravity.LEFT;break;
+            }
         }
         imageView.setLayoutParams(layoutParams);
         setPadding(imageView,dyImageView.getPadding());
@@ -120,25 +137,6 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
 
     }
 
-
-    public void createTextView(String text) {
-        TextView textView = new TextView(this);
-        textView.setTextSize(16);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, getDimension(R.dimen.dp20), 0, getDimension(R.dimen.dp20));
-        textView.setLayoutParams(params);
-        textView.setText(text);
-        parentLayout.addView(textView);
-
-        DYTextView DYTextView = new DYTextView();
-        DYTextView.setType(Constants.TYPE_TEXT_VIEW);
-        DYTextView.setText(text);
-        DYTextView.setTextSize(16);
-        views.add(DYTextView);
-    }
-
-
     public void createEditText(DYEditText dyEditText) {
         EditText editText = new EditText(this);
         editText.setMinimumWidth(getDimension(R.dimen.dp200));
@@ -150,11 +148,19 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
             editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
             editText.setHorizontallyScrolling(true);
         } else {
-            editText.setLines(5);
+            editText.setLines(1);
         }
-        editText.setLayoutParams(setParams(dyEditText.getHeight(),dyEditText.getWidth(),dyEditText.getMargin()));
+        LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) setParams(dyEditText.getHeight(),dyEditText.getWidth(),dyEditText.getMargin());
+        if (dyEditText.getGravity()!=null){
+            switch (dyEditText.getGravity()){
+                case  "center": layoutParams.gravity=Gravity.CENTER;break;
+                case  "left": layoutParams.gravity=Gravity.LEFT;break;
+                case  "right": layoutParams.gravity=Gravity.RIGHT;break;
+                default:layoutParams.gravity=Gravity.LEFT;break;
+            }
+        }
+        editText.setLayoutParams(layoutParams);
         setPadding(editText,dyEditText.getPadding());
-        setGravity(editText,dyEditText.getGravity());
         setTextStyle(editText,dyEditText.getTextStyle());
         parentLayout.addView(editText);
         views.add(dyEditText);
@@ -163,14 +169,17 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
     public void createRadioGroup(DYRadioGroup dyRadioGroup) {
         RadioGroup radioGroup = new RadioGroup(this);
         radioGroup.setOrientation(LinearLayout.VERTICAL);
-        radioGroup.setLayoutParams(setParams(dyRadioGroup.getHeight(),dyRadioGroup.getWidth(),dyRadioGroup.getMargin()));
-        setPadding(radioGroup,dyRadioGroup.getPadding());
-        switch (dyRadioGroup.getGravity()){
-            case  "center": radioGroup.setGravity(Gravity.CENTER);break;
-            case  "left": radioGroup.setGravity(Gravity.LEFT);break;
-            case  "right": radioGroup.setGravity(Gravity.RIGHT);break;
-            default:radioGroup.setGravity(Gravity.LEFT);break;
+        LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) setParams(dyRadioGroup.getHeight(),dyRadioGroup.getWidth(),dyRadioGroup.getMargin());
+        if (dyRadioGroup.getGravity()!=null){
+            switch (dyRadioGroup.getGravity()){
+                case  "center": layoutParams.gravity=Gravity.CENTER;break;
+                case  "left": layoutParams.gravity=Gravity.LEFT;break;
+                case  "right": layoutParams.gravity=Gravity.RIGHT;break;
+                default:layoutParams.gravity=Gravity.LEFT;break;
+            }
         }
+        radioGroup.setLayoutParams(layoutParams);
+        setPadding(radioGroup,dyRadioGroup.getPadding());
         RadioButton radioButton;
         for (String option : dyRadioGroup.getOptions()) {
             radioButton = new RadioButton(this);
@@ -186,7 +195,16 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
     public void createCheckbox(DYCheckbox dyCheckbox) {
         CheckBox checkBox = new CheckBox(this);
         checkBox.setText(dyCheckbox.getDescription());
-        checkBox.setLayoutParams(setParams(dyCheckbox.getHeight(),dyCheckbox.getWidth(),dyCheckbox.getMargin()));
+        LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) setParams(dyCheckbox.getHeight(),dyCheckbox.getWidth(),dyCheckbox.getMargin());
+        if (dyCheckbox.getGravity()!=null){
+            switch (dyCheckbox.getGravity()){
+                case  "center": layoutParams.gravity=Gravity.CENTER;break;
+                case  "left": layoutParams.gravity=Gravity.LEFT;break;
+                case  "right": layoutParams.gravity=Gravity.RIGHT;break;
+                default:layoutParams.gravity=Gravity.LEFT;break;
+            }
+        }
+        checkBox.setLayoutParams(layoutParams);
         setPadding(checkBox,dyCheckbox.getPadding());
         setGravity(checkBox,dyCheckbox.getGravity());
         parentLayout.addView(checkBox);
@@ -218,14 +236,17 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
     public void createDropDownList(DYDropDownList dyDropDownList) {
 
         Spinner spinner = new Spinner(this);
-        spinner.setLayoutParams(setParams(dyDropDownList.getHeight(),dyDropDownList.getWidth(),dyDropDownList.getMargin()));
-        setPadding(spinner,dyDropDownList.getPadding());
-        switch (dyDropDownList.getGravity()){
-            case  "center": spinner.setGravity(Gravity.CENTER);break;
-            case  "left": spinner.setGravity(Gravity.LEFT);break;
-            case  "right": spinner.setGravity(Gravity.RIGHT);break;
-            default:spinner.setGravity(Gravity.LEFT);break;
+        LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) setParams(dyDropDownList.getHeight(),dyDropDownList.getWidth(),dyDropDownList.getMargin());
+        if (dyDropDownList.getGravity()!=null){
+            switch (dyDropDownList.getGravity()){
+                case  "center": layoutParams.gravity=Gravity.CENTER;break;
+                case  "left": layoutParams.gravity=Gravity.LEFT;break;
+                case  "right": layoutParams.gravity=Gravity.RIGHT;break;
+                default:layoutParams.gravity=Gravity.LEFT;break;
+            }
         }
+        spinner.setLayoutParams(layoutParams);
+        setPadding(spinner,dyDropDownList.getPadding());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.buildformer_spinner_item);
         for (String option : dyDropDownList.getOptions()) {
             adapter.add(option);
@@ -244,24 +265,31 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
             String type = view.getType();
             if (type.equals(Constants.TYPE_TEXT_VIEW)) {
                 DYTextView dyTextView = (DYTextView) view;
+                dyTextView.setGravity(Constants.JSON_KEY_CENTER);
                 createTextView(dyTextView);
             } else if (type.equals(Constants.TYPE_EDIT_TEXT)) {
                 DYEditText dyEditText = (DYEditText) view;
+                dyEditText.setGravity(Constants.JSON_KEY_CENTER);
                 createEditText(dyEditText);
             } else if (type.equals(Constants.TYPE_CHECKBOX)) {
                 DYCheckbox dyCheckbox = (DYCheckbox) view;
+                dyCheckbox.setGravity(Constants.JSON_KEY_CENTER);
                 createCheckbox(dyCheckbox);
             } else if (type.equals(Constants.TYPE_RADIO_GROUP)) {
                 DYRadioGroup dyRadioGroup = (DYRadioGroup) view;
+                dyRadioGroup.setGravity(Constants.JSON_KEY_CENTER);
                 createRadioGroup(dyRadioGroup);
             } else if (type.equals(Constants.TYPE_DROP_DOWN_LIST)) {
                 DYDropDownList dyDropDownList = (DYDropDownList) view;
+                dyDropDownList.setGravity(Constants.JSON_KEY_CENTER);
                 createDropDownList(dyDropDownList);
             }else if (type.equals(Constants.TYPE_BUTTON)) {
                 DYButton dyButton= (DYButton) view;
+                dyButton.setGravity(Constants.JSON_KEY_CENTER);
                 createButton(dyButton);
             }else if (type.equals(Constants.TYPE_IMAGE_VIEW)) {
                 DYImageView dyImageView= (DYImageView) view;
+                dyImageView.setGravity(Constants.JSON_KEY_CENTER);
                 createImageView(dyImageView);
             }
         }
@@ -307,16 +335,16 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
                     viewWidth=ViewGroup.LayoutParams.WRAP_CONTENT;
                 }
             }
-            if (height.equals("wrap_content")){
+            if (height.equals(Constants.JSON_KEY_WRAP_CONTENT)){
                 viewHeight=ViewGroup.LayoutParams.WRAP_CONTENT;
             }
-            if (width.equals("wrap_content")){
+            if (width.equals(Constants.JSON_KEY_WRAP_CONTENT)){
                 viewWidth=ViewGroup.LayoutParams.WRAP_CONTENT;
             }
-            if (height.equals("match_parent")){
+            if (height.equals(Constants.JSON_KEY_MATCH_PARENT)){
                 viewHeight=ViewGroup.LayoutParams.MATCH_PARENT;
             }
-            if (width.equals("match_parent")){
+            if (width.equals(Constants.JSON_KEY_MATCH_PARENT)){
                 viewWidth=ViewGroup.LayoutParams.MATCH_PARENT;
             }
 
@@ -349,9 +377,9 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
     private void setGravity(TextView view, String gravity) {
         if (gravity!=null){
             switch (gravity){
-                case  "center": view.setGravity(Gravity.CENTER);break;
-                case  "left": view.setGravity(Gravity.LEFT);break;
-                case  "right": view.setGravity(Gravity.RIGHT);break;
+                case  Constants.JSON_KEY_CENTER: view.setGravity(Gravity.CENTER);break;
+                case  Constants.JSON_KEY_LEFT: view.setGravity(Gravity.LEFT);break;
+                case  Constants.JSON_KEY_RIGHT: view.setGravity(Gravity.RIGHT);break;
                 default:view.setGravity(Gravity.LEFT);break;
             }
         }
@@ -369,11 +397,15 @@ public class FormBuilder extends ContextWrapper implements View.OnClickListener 
     }
 
     private int setInputType(String inputType) {
-        switch (inputType){
-            case "text":return InputType.TYPE_CLASS_TEXT;
-            case "number":return InputType.TYPE_CLASS_NUMBER;
-            case "phone":return InputType.TYPE_CLASS_PHONE;
-            default:return InputType.TYPE_NULL;
+        if (inputType!=null){
+            switch (inputType){
+                case "text":return InputType.TYPE_CLASS_TEXT;
+                case "number":return InputType.TYPE_CLASS_NUMBER;
+                case "phone":return InputType.TYPE_CLASS_PHONE;
+                default:return InputType.TYPE_NULL;
+            }
+        }else {
+            return InputType.TYPE_NULL;
         }
     }
 

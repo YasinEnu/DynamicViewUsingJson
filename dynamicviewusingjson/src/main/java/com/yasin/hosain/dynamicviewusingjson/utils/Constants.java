@@ -27,4 +27,9 @@ public class Constants {
     public static final String JSON_KEY_TEXT_STYLE = "textStyle";
     public static final String JSON_KEY_HINT = "hint";
     public static final String JSON_INPUT_TYPE = "inputType";
+    public static final String JSON_KEY_MATCH_PARENT ="match_parent";
+    public static final String JSON_KEY_WRAP_CONTENT ="wrap_content";
+    public static final String JSON_KEY_CENTER = "center";
+    public static final String JSON_KEY_LEFT = "left";
+    public static final String JSON_KEY_RIGHT = "right";
 }
